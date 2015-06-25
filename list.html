@@ -4,12 +4,11 @@
 
 <div class="media" ng-repeat="link in links">
   <div class="media-left">
-    <a href="#">
-      <img class="media-object" ng-src="..." alt="...">
-    </a>
+    <img class="media-object" ng-src="..." alt="..." ng-click="deleteLink($index)">
   </div>
   <div class="media-body">
     <h4 class="media-heading"><a href="{{link.url}}">{{link.title}}</a></h4>
     {{link.description}}
+    <a href="#/show/{{$index}}">comments</a>
   </div>
 </div>

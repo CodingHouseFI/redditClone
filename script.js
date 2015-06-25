@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('reddit', ["ngRoute"])
+var redditApp = angular.module('reddit', ["ngRoute"])
 .config(function($routeProvider) {
   $routeProvider
   .when('/', {
@@ -10,6 +10,10 @@ angular.module('reddit', ["ngRoute"])
   .when('/new', {
     controller: 'NewLinkCtrl',
     templateUrl: 'new.html'
+  })
+  .when('/show/:id', {
+    controller: 'showLinkCtrl',
+    templateUrl: 'show.html'
   })
   .otherwise({
     redirectTo: '/'
@@ -24,16 +28,21 @@ angular.module('reddit', ["ngRoute"])
 
   this.storeLink = function(newLink) {
     this.links.unshift(newLink);
-  }
+  };
+
+  this.deleteLink = function(linkIndex) {
+    this.links.splice(linkIndex, 1);
+  };
+
+  this.readLink = function(index) {
+    return this.links[index];
+  };
 })
-.controller('NewLinkCtrl', function($scope, $location, linkService){
-  $scope.newLink = {};
-  $scope.addLinkAndRedirect = function() {
-    linkService.storeLink($scope.newLink);
-    $scope.newLink = {};
-    $location.path("/");
-  }
+.controller('showLinkCtrl', function($scope, linkService, $routeParams){
+  $scope.oneLink = linkService.readLink($routeParams.id);
 })
 .controller('ListCtrl', function($scope, linkService){
   $scope.links = linkService.links;
+
+  $scope.deleteLink = linkService.deleteLink;
 });
